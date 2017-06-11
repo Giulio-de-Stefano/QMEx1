@@ -14,10 +14,12 @@ public class Cart {
 
     public void addProduct(Product newProduct, Number moreQuantity) {
         if (moreQuantity.doubleValue() <= 0)
-            throw new IllegalArgumentException("Quantity to be added [" + moreQuantity + "] must be positive");
+            throw new IllegalArgumentException("Quantity to be added [" + moreQuantity + "] for product ["
+                    + newProduct.getName() + "] must be positive");
 
         if (newProduct.isCountable() && moreQuantity.doubleValue() != moreQuantity.intValue())
-            throw new IllegalArgumentException("Quantity to be added [" + moreQuantity + "] must be an integer for countable products");
+            throw new IllegalArgumentException("Quantity to be added [" + moreQuantity + "] for product ["
+                    + newProduct.getName() + "] must be an integer for countable products");
 
         if (newProduct.isCountable())
             product2quantity.put(newProduct, getProductQuantity(newProduct).intValue() + moreQuantity.intValue());
@@ -25,9 +27,40 @@ public class Cart {
             product2quantity.put(newProduct, getProductQuantity(newProduct).doubleValue() + moreQuantity.doubleValue());
     }
 
+    public void removeProduct(Product remProduct) {
+        removeProduct(remProduct, this.getProductQuantity(remProduct));
+    }
+
+    public void removeProduct(Product remProduct, Number lessQuantity) {
+        if (lessQuantity.doubleValue() <= 0)
+            throw new IllegalArgumentException("Quantity to be removed [" + lessQuantity + "] for product ["
+                    + remProduct.getName() + "] must be positive");
+
+        if (remProduct.isCountable() && lessQuantity.doubleValue() != lessQuantity.intValue())
+            throw new IllegalArgumentException("Quantity to be removed [" + lessQuantity + "] for product ["
+                    + remProduct.getName() + "] must be an integer for countable products");
+
+        if (!this.containsProduct(remProduct))
+            throw new IllegalArgumentException("Attempted to remove a product [" + remProduct.getName()
+                    + "] that does not exist");
+
+        if (remProduct.isCountable())
+            product2quantity.put(remProduct, getProductQuantity(remProduct).intValue() - lessQuantity.intValue());
+        else
+            product2quantity.put(remProduct, getProductQuantity(remProduct).doubleValue() - lessQuantity.doubleValue());
+    }
+
+    public boolean containsProduct(Product product) {
+        return this.getProductQuantity(product).doubleValue() != 0;
+    }
+
+    public boolean containsProductQuantity(Product product, Number quantity) {
+        return this.getProductQuantity(product).equals(quantity);
+    }
+
     public Number getProductQuantity(Product product) {
         Number quantity = product2quantity.get(product);
-        return quantity == null ? 0 : quantity;
+        return (quantity == null || quantity.equals(0.0)) ? 0 : quantity;
     }
 
     public int getUniqueProductCount() {
