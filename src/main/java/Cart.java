@@ -33,9 +33,12 @@ public class Cart {
             throw new IllegalArgumentException("Attempted to remove a product [" + remProduct.getName()
                     + "] that does not exist");
 
-        // TODO check removing more than is present
+        int currentQuantity = getProductQuantity(remProduct);
+        if (lessQuantity > currentQuantity)
+            throw new IllegalArgumentException("Can't remove quantity [" + lessQuantity + "] for product ["
+                    + remProduct.getName() + "] as there is only [" + currentQuantity + "]");
 
-        product2quantity.put(remProduct, getProductQuantity(remProduct) - lessQuantity);
+        product2quantity.put(remProduct, currentQuantity - lessQuantity);
     }
 
     public boolean containsProduct(Product product) {

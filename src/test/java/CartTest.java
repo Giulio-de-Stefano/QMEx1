@@ -55,6 +55,15 @@ public class CartTest {
         c.removeProduct(product, quantity);
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = ".*Can't remove quantity.*as there is only.*")
+    public void testRemoveProductQuantityMoreThanExists() {
+        Product beans = new Product("Beans", 0.50, true);
+        Cart c = new Cart();
+        c.addProduct(beans, 4);
+        c.removeProduct(beans, 5);
+    }
+
     @Test
     public void testGetQuantityMultipleProducts() {
         Cart c = new Cart();
