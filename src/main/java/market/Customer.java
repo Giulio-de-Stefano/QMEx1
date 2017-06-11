@@ -1,3 +1,5 @@
+package market;
+
 public class Customer {
 
     private static int global_id = 0;

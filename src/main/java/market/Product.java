@@ -1,3 +1,5 @@
+package market;
+
 import static org.apache.commons.lang3.StringUtils.isAlphanumericSpace;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 

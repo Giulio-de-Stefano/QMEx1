@@ -1,5 +1,8 @@
+package market;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import market.Product;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.testng.Assert.assertEquals;
