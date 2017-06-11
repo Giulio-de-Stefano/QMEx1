@@ -1,8 +1,7 @@
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class CartTest {
 
@@ -17,17 +16,21 @@ public class CartTest {
         };
     }
 
-    @DataProvider(name = "badQuantitiesProducts")
-    public static Object[][] badQuantitiesProducts() {
+    @DataProvider(name = "nonPositiveQuantitiesProducts")
+    public static Object[][] nonPositiveQuantitiesProducts() {
         return new Object[][]{
                 {new Product("Coke", 0.75, true), -1},
-                {new Product("Beans", 0.50, true), -0.01},
+                {new Product("Oranges", 1.99, false), 0},
+                {new Product("Apples", 1.99, false), -10000},
+        };
+    }
+
+    @DataProvider(name = "doubleQuantityCountableProducts")
+    public static Object[][] doubleQuantitiesCountableProducts() {
+        return new Object[][]{
                 {new Product("Chocolate", 1.00, true), 0.99},
                 {new Product("Beer", 2.80, true), 0.25},
-                {new Product("Oranges", 1.99, false), 0},
-                {new Product("Apples", 1.99, false), -1},
-                {new Product("Bananas", 1.99, false), -0.01},
-                {new Product("Chocolate", 1.99, true), 0.5},
+                {new Product("Chocolate", 1.99, true), 99.01},
         };
     }
 
@@ -38,10 +41,43 @@ public class CartTest {
         c.getProductQuantity(product);
     }
 
-    @Test(dataProvider = "badQuantitiesProducts", expectedExceptions = IllegalArgumentException.class)
-    public void testAddProductBadQuantity(Product product, Number quantity) {
+    @Test(dataProvider = "nonPositiveQuantitiesProducts",
+            expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = ".*must be positive.*")
+    public void testAddProductNonPositiveQuantity(Product product, Number quantity) {
         Cart c = new Cart();
         c.addProduct(product, quantity);
+    }
+
+    @Test(dataProvider = "doubleQuantityCountableProducts",
+            expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = ".*must be an integer for countable products.*")
+    public void testAddProductDoubleQuantityCountableProduct(Product product, Number quantity) {
+        Cart c = new Cart();
+        c.addProduct(product, quantity);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class, expectedExceptionsMessageRegExp = ".*does not exist.*")
+    public void testRemoveProductAbsent() {
+        Product beans = new Product("Beans", 0.50, true);
+        Cart c = new Cart();
+        c.removeProduct(beans, 1);
+    }
+
+    @Test(dataProvider = "nonPositiveQuantitiesProducts",
+            expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = ".*must be positive.*")
+    public void testRemoveProductNonPositiveQuantity(Product product, Number quantity) {
+        Cart c = new Cart();
+        c.removeProduct(product, quantity);
+    }
+
+    @Test(dataProvider = "doubleQuantityCountableProducts",
+            expectedExceptions = IllegalArgumentException.class,
+            expectedExceptionsMessageRegExp = ".*must be an integer for countable products.*")
+    public void testRemoveProductDoubleQuantityCountableProduct(Product product, Number quantity) {
+        Cart c = new Cart();
+        c.removeProduct(product, quantity);
     }
 
     @Test
@@ -111,6 +147,44 @@ public class CartTest {
 
         c.clearProducts();
         assertEquals(c.getUniqueProductCount(), 0);
+    }
+
+    @Test
+    public void testContainsProduct() {
+        Product beans = new Product("Beans", 0.50, true);
+
+        Cart c = new Cart();
+        assertFalse(c.containsProduct(beans));
+
+        c.addProduct(beans, 1);
+        assertTrue(c.containsProduct(beans));
+
+        c.addProduct(beans, 3);
+        assertTrue(c.containsProduct(beans));
+
+        c.removeProduct(beans, 1);
+        assertTrue(c.containsProduct(beans));
+
+        c.removeProduct(beans);
+        assertFalse(c.containsProduct(beans));
+    }
+
+    @Test
+    public void testContainsProductQuantity() {
+        Product oranges = new Product("Oranges", 1.50, false);
+
+        Cart c = new Cart();
+        assertTrue(c.containsProductQuantity(oranges, 0));
+        assertFalse(c.containsProductQuantity(oranges, 1));
+
+        c.addProduct(oranges, 5.00);
+        assertTrue(c.containsProductQuantity(oranges, 5.00));
+
+        c.removeProduct(oranges, 3.75);
+        assertTrue(c.containsProductQuantity(oranges, 1.25));
+
+        c.removeProduct(oranges, 1.25);
+        assertTrue(c.containsProductQuantity(oranges, 0));
     }
 
     @Test
