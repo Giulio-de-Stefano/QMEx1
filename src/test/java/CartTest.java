@@ -12,7 +12,7 @@ public class CartTest {
                 {new Product("Beans", 0.50, true), 1},
                 {new Product("Chocolate", 1.00, true), 3},
                 {new Product("Beer", 2.80, true), 10},
-                {new Product("Oranges", 1.99, false), 0.3},
+                {new Product("Oranges", 1.99, false), 30},
         };
     }
 
@@ -25,17 +25,8 @@ public class CartTest {
         };
     }
 
-    @DataProvider(name = "doubleQuantityCountableProducts")
-    public static Object[][] doubleQuantitiesCountableProducts() {
-        return new Object[][]{
-                {new Product("Chocolate", 1.00, true), 0.99},
-                {new Product("Beer", 2.80, true), 0.25},
-                {new Product("Chocolate", 1.99, true), 99.01},
-        };
-    }
-
     @Test(dataProvider = "legitProducts")
-    public void testAddProductLegitQuantity(Product product, Number quantity) {
+    public void testAddProductLegitQuantity(Product product, int quantity) {
         Cart c = new Cart();
         c.addProduct(product, quantity);
         c.getProductQuantity(product);
@@ -44,15 +35,7 @@ public class CartTest {
     @Test(dataProvider = "nonPositiveQuantitiesProducts",
             expectedExceptions = IllegalArgumentException.class,
             expectedExceptionsMessageRegExp = ".*must be positive.*")
-    public void testAddProductNonPositiveQuantity(Product product, Number quantity) {
-        Cart c = new Cart();
-        c.addProduct(product, quantity);
-    }
-
-    @Test(dataProvider = "doubleQuantityCountableProducts",
-            expectedExceptions = IllegalArgumentException.class,
-            expectedExceptionsMessageRegExp = ".*must be an integer for countable products.*")
-    public void testAddProductDoubleQuantityCountableProduct(Product product, Number quantity) {
+    public void testAddProductNonPositiveQuantity(Product product, int quantity) {
         Cart c = new Cart();
         c.addProduct(product, quantity);
     }
@@ -67,15 +50,7 @@ public class CartTest {
     @Test(dataProvider = "nonPositiveQuantitiesProducts",
             expectedExceptions = IllegalArgumentException.class,
             expectedExceptionsMessageRegExp = ".*must be positive.*")
-    public void testRemoveProductNonPositiveQuantity(Product product, Number quantity) {
-        Cart c = new Cart();
-        c.removeProduct(product, quantity);
-    }
-
-    @Test(dataProvider = "doubleQuantityCountableProducts",
-            expectedExceptions = IllegalArgumentException.class,
-            expectedExceptionsMessageRegExp = ".*must be an integer for countable products.*")
-    public void testRemoveProductDoubleQuantityCountableProduct(Product product, Number quantity) {
+    public void testRemoveProductNonPositiveQuantity(Product product, int quantity) {
         Cart c = new Cart();
         c.removeProduct(product, quantity);
     }
@@ -91,10 +66,10 @@ public class CartTest {
         assertEquals(c.getProductQuantity(countableProduct), 9);
 
         Product weighableProduct = new Product("Bananas", 1.8, false);
-        c.addProduct(weighableProduct, 0.2);
-        c.addProduct(weighableProduct, 0.4);
-        c.addProduct(weighableProduct, 3);
-        assertEquals(c.getProductQuantity(weighableProduct), 3.6);
+        c.addProduct(weighableProduct, 200);
+        c.addProduct(weighableProduct, 400);
+        c.addProduct(weighableProduct, 300);
+        assertEquals(c.getProductQuantity(weighableProduct), 900);
     }
 
     @Test
@@ -108,7 +83,7 @@ public class CartTest {
 
         cart.addProduct(beans, 4);
         cart.addProduct(chocolate, 1);
-        cart.addProduct(oranges, 0.75);
+        cart.addProduct(oranges, 750);
 
         int uniqueProducts = 3;
         assertEquals(cart.getUniqueProductCount(), uniqueProducts);
@@ -125,7 +100,7 @@ public class CartTest {
 
         cart.addProduct(beans, 4);
         cart.addProduct(chocolate, 1);
-        cart.addProduct(oranges, 0.75);
+        cart.addProduct(oranges, 750);
 
         int repeatedProducts = 6;
         assertEquals(cart.getRepeatedProductCount(), repeatedProducts);
@@ -142,7 +117,7 @@ public class CartTest {
         assertEquals(c.getUniqueProductCount(), 0);
 
         c.addProduct(beans, 3);
-        c.addProduct(oranges, 0.80);
+        c.addProduct(oranges, 800);
         assertEquals(c.getUniqueProductCount(), 2);
 
         c.clearProducts();
@@ -177,13 +152,13 @@ public class CartTest {
         assertTrue(c.containsProductQuantity(oranges, 0));
         assertFalse(c.containsProductQuantity(oranges, 1));
 
-        c.addProduct(oranges, 5.00);
-        assertTrue(c.containsProductQuantity(oranges, 5.00));
+        c.addProduct(oranges, 500);
+        assertTrue(c.containsProductQuantity(oranges, 500));
 
-        c.removeProduct(oranges, 3.75);
-        assertTrue(c.containsProductQuantity(oranges, 1.25));
+        c.removeProduct(oranges, 375);
+        assertTrue(c.containsProductQuantity(oranges, 125));
 
-        c.removeProduct(oranges, 1.25);
+        c.removeProduct(oranges, 125);
         assertTrue(c.containsProductQuantity(oranges, 0));
     }
 
