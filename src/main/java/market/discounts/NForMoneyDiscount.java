@@ -10,6 +10,14 @@ public class NForMoneyDiscount extends DiscountAB {
         super(product, DiscountType.N_FOR_MONEY);
         this.quantity = quantity;
         this.discountedPrice = discountedPrice;
+
+        if (quantity <= 0)
+            throw new IllegalArgumentException("The quantity [" + quantity
+                    + "] must be positive for product [" + product.getName() + "]");
+
+        if (discountedPrice >= product.getPrice())
+            throw new IllegalArgumentException("The discounted price [" + discountedPrice
+                    + "] should be lower than the product [" + product.getName() + "] full price [" + product.getPrice());
     }
 
     public int getQuantity() {
