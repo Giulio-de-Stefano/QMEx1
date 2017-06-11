@@ -48,7 +48,7 @@ public class Cart {
         return size;
     }
 
-    public void clearCart() {
+    public void clearProducts() {
         product2quantity.keySet().clear();
     }
 

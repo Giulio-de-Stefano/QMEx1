@@ -105,7 +105,7 @@ public class CartTest {
         c.addProduct(oranges, 0.80);
         assertEquals(c.getUniqueProductCount(), 2);
 
-        c.clearCart();
+        c.clearProducts();
         assertEquals(c.getUniqueProductCount(), 0);
     }
 
