@@ -101,6 +101,10 @@ public class CartTest {
         Product oranges = new Product("Oranges", 0.99, false);
 
         Cart c = new Cart();
+        assertEquals(c.getUniqueProductCount(), 0);
+        c.clearProducts();
+        assertEquals(c.getUniqueProductCount(), 0);
+
         c.addProduct(beans, 3);
         c.addProduct(oranges, 0.80);
         assertEquals(c.getUniqueProductCount(), 2);
