@@ -3,7 +3,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class Product {
 
-    public static int global_id = 0;
+    private static int global_id = 0;
     private final int id;
     private final String name;
     private final Double price; // per unit or per KG

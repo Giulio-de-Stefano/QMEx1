@@ -3,7 +3,7 @@ import java.util.Map;
 
 public class Cart {
 
-    public static int global_id = 0;
+    private static int global_id = 0;
     private final int id;
     private final Map<Product, Number> product2quantity;
 

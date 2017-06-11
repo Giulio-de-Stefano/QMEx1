@@ -1,6 +1,6 @@
 public class Customer {
 
-    public static int global_id = 0;
+    private static int global_id = 0;
     private final int id;
     private final Cart cart;
 
