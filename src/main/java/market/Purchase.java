@@ -112,4 +112,35 @@ public class Purchase {
     public double getSavedAmount() {
         return savedAmount;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Purchase purchase = (Purchase) o;
+
+        if (quantity != purchase.quantity) return false;
+        if (Double.compare(purchase.totalFullPrice, totalFullPrice) != 0) return false;
+        if (Double.compare(purchase.totalDiscountedPrice, totalDiscountedPrice) != 0) return false;
+        if (Double.compare(purchase.savedAmount, savedAmount) != 0) return false;
+        if (discountApplied != purchase.discountApplied) return false;
+        return product.equals(purchase.product);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = product.hashCode();
+        result = 31 * result + quantity;
+        temp = Double.doubleToLongBits(totalFullPrice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(totalDiscountedPrice);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(savedAmount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (discountApplied ? 1 : 0);
+        return result;
+    }
 }

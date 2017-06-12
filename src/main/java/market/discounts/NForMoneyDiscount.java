@@ -15,8 +15,8 @@ public class NForMoneyDiscount extends DiscountAB {
             throw new IllegalArgumentException("The quantity [" + quantity
                     + "] must be positive for product [" + product.getName() + "]");
 
-        if (discountedPrice/quantity >= product.getPrice())
-            throw new IllegalArgumentException("The discounted price [" + discountedPrice/quantity
+        if (discountedPrice / quantity >= product.getPrice())
+            throw new IllegalArgumentException("The discounted price [" + discountedPrice / quantity
                     + "] should be lower than the product [" + product.getName() + "] full price [" + product.getPrice() + "]");
     }
 

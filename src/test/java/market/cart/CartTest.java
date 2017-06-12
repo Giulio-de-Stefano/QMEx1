@@ -1,8 +1,8 @@
-package market;
+package market.cart;
 
+import market.Product;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import market.cart.Cart;
 
 import static org.testng.Assert.*;
 
