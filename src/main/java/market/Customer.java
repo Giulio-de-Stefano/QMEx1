@@ -6,7 +6,7 @@ public class Customer {
 
     private static int global_id = 0;
     private final int id;
-    private final Cart cart;
+    private Cart cart;
 
     public Customer() {
         this.id = global_id++;
@@ -19,5 +19,9 @@ public class Customer {
 
     public Cart getCart() {
         return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }
