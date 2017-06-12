@@ -81,4 +81,20 @@ public class PurchaseTest {
         assertEquals(purchase.getTotalDiscountedPrice(), expDiscountedTotalPrice);
         assertEquals(purchase.getSavedAmount(), expSavings);
     }
+
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void unrelatedDiscountDoesNotApply() {
+        Purchase purchase = new Purchase(beans, 5);
+        DiscountAB discount = new MoreForLessDiscount(chocolate, 3, 2);
+        purchase.applyDiscount(discount);
+    }
+
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void doubleDiscountDoesNotApply() {
+        Purchase purchase = new Purchase(beans, 5);
+        DiscountAB discount = new MoreForLessDiscount(beans, 3, 2);
+        DiscountAB discount2 = new NForMoneyDiscount(beans, 10, 1);
+        purchase.applyDiscount(discount);
+        purchase.applyDiscount(discount2);
+    }
 }
