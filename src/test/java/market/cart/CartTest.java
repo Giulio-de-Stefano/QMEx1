@@ -1,7 +1,6 @@
 package market.cart;
 
 import market.Product;
-import market.cart.Cart;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
