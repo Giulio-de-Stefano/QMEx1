@@ -9,7 +9,7 @@ public class NForMoneyDiscountTest {
     @Test(expectedExceptions = IllegalArgumentException.class,
             expectedExceptionsMessageRegExp = ".*The discounted price.* should be lower.*")
     public void invalidDiscountDiscountedPriceMoreExpensive() {
-        new NForMoneyDiscount(beans, 3, 0.75);
+        new NForMoneyDiscount(beans, 3, 1.75);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class,
