@@ -11,29 +11,41 @@ import java.util.Set;
 
 public class CartPriceCalculator {
 
-    private Cart cart;
-    private Map<String, Double> productName2discountedPrice;
-    private Map<String, Double> productName2savings;
-    private Set<DiscountAB> discounts;
+    private final Cart cart;
+    private final Set<Purchase> purchases;
+    private final Map<String, Double> productName2fullPrice;
+    private final Map<String, Double> productName2discountedPrice;
+    private final Map<String, Double> productName2savings;
+    private final Set<DiscountAB> discounts;
 
     public CartPriceCalculator(Cart cart) {
         this.cart = cart;
-        productName2discountedPrice = new HashMap<>();
-        productName2savings = new HashMap<>();
-        discounts = new HashSet<>();
+        this.purchases = new HashSet<>();
+        this.productName2fullPrice = new HashMap<>();
+        this.productName2discountedPrice = new HashMap<>();
+        this.productName2savings = new HashMap<>();
+        this.discounts = new HashSet<>();
+        this.computePurchases();
+        this.computeFullPrices();
         this.computeDiscounts();
     }
 
+    private void computePurchases() {
+        for (Product product : cart.getProducts().keySet())
+            purchases.add(new Purchase(product, cart.getProducts().get(product)));
+    }
+
+    private void computeFullPrices() {
+        for (Purchase purchase : this.getPurchases())
+            productName2fullPrice.put(purchase.getProduct().getName(), purchase.getTotalFullPrice());
+    }
+
     private void computeDiscounts() {
-        Set<Purchase> purhcases = new HashSet<>();
         productName2discountedPrice.clear();
         productName2savings.clear();
 
-        for (Product product : cart.getProducts().keySet())
-            purhcases.add(new Purchase(product, cart.getProducts().get(product)));
-
         for (DiscountAB discount : discounts)
-            for (Purchase purchase : purhcases)
+            for (Purchase purchase : this.getPurchases())
                 if (purchase.getProduct().equals(discount.getProduct())) {
                     purchase.applyDiscount(discount);
                     String name = purchase.getProduct().getName();
@@ -53,11 +65,19 @@ public class CartPriceCalculator {
         this.computeDiscounts();
     }
 
+    public Map<String, Double> getFullPricesMap() {
+        return new HashMap<>(productName2fullPrice);
+    }
+
     public Map<String, Double> getDiscountedPricesMap() {
         return new HashMap<>(productName2discountedPrice);
     }
 
     public Map<String, Double> getSavingsMap() {
         return new HashMap<>(productName2savings);
+    }
+
+    public Set<Purchase> getPurchases() {
+        return new HashSet<>(purchases);
     }
 }
