@@ -1,4 +1,6 @@
-package market;
+package market.cart;
+
+import market.Product;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +85,7 @@ public class Cart {
     }
 
     public Map<Product, Integer> getProducts() {
-        return product2quantity;
+        return new HashMap<>(product2quantity);
     }
 
     @Override

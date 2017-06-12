@@ -1,6 +1,5 @@
-package market.calculators;
+package market;
 
-import market.Product;
 import market.discounts.DiscountAB;
 import market.discounts.MoreForLessDiscount;
 import market.discounts.NForMoneyDiscount;
