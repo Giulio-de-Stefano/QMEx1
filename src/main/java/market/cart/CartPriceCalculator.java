@@ -31,6 +31,7 @@ public class CartPriceCalculator {
     }
 
     private void computePurchases() {
+        purchases.clear();
         for (Product product : cart.getProducts().keySet())
             purchases.add(new Purchase(product, cart.getProducts().get(product)));
     }
@@ -57,11 +58,13 @@ public class CartPriceCalculator {
 
     public void addDiscount(DiscountAB newDiscount) {
         discounts.add(newDiscount);
+        this.computePurchases();
         this.computeDiscounts();
     }
 
     public void removeDiscount(DiscountAB remDiscount) {
         discounts.remove(remDiscount);
+        this.computePurchases();
         this.computeDiscounts();
     }
 
@@ -79,5 +82,30 @@ public class CartPriceCalculator {
 
     public Set<Purchase> getPurchases() {
         return new HashSet<>(purchases);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CartPriceCalculator that = (CartPriceCalculator) o;
+
+        if (!cart.equals(that.cart)) return false;
+        if (!purchases.equals(that.purchases)) return false;
+        if (!productName2fullPrice.equals(that.productName2fullPrice)) return false;
+        if (!productName2discountedPrice.equals(that.productName2discountedPrice)) return false;
+        return productName2savings.equals(that.productName2savings) && discounts.equals(that.discounts);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cart.hashCode();
+        result = 31 * result + purchases.hashCode();
+        result = 31 * result + productName2fullPrice.hashCode();
+        result = 31 * result + productName2discountedPrice.hashCode();
+        result = 31 * result + productName2savings.hashCode();
+        result = 31 * result + discounts.hashCode();
+        return result;
     }
 }
