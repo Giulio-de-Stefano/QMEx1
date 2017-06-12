@@ -190,6 +190,14 @@ public class CartTest {
         c1.addProduct(chocolate, 2);
         c2.addProduct(chocolate, 2);
         assertTrue(c1.equals(c2));
+
+        c1.removeProduct(beans, 2);
+        c2.removeProduct(beans, 2);
+        assertTrue(c1.equals(c2));
+
+        c1.removeProduct(chocolate, 2);
+        c2.removeProduct(chocolate, 2);
+        assertTrue(c1.equals(c2));
     }
 }
 
