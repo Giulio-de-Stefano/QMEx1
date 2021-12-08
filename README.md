@@ -6,7 +6,7 @@ The main classes are:
 * Cart - holds a set of products and their respective quantities added so far, with methods to add / remove products
 * DiscountAB and extensions - they represent the various types of discounts
 * Purchase - it's used to hold a Product and allows to apply discounts to it; that logic doesn't have to be known by a Cart,
-hence I kept it resides in its own class.
+hence it resides in its own class.
 * CartPriceCalculator - it does what it says! Figures out full prices / discounted prices / savings of a cart
 
 
