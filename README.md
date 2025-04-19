@@ -1,4 +1,4 @@
-# TheWrongThingy
+# Some interview exercise...
 
 The main classes are:
 * Customer - it contains the bare minimum (an id and a cart)
