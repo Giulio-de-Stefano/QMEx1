@@ -45,12 +45,17 @@ public class Product {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) 
+            return true;
+        
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         Product product = (Product) o;
 
-        if (isCountable != product.isCountable) return false;
+        if (isCountable != product.isCountable)
+            return false;
+        
         return name.equals(product.name) && price.equals(product.price);
     }
 
@@ -59,6 +64,7 @@ public class Product {
         int result = name.hashCode();
         result = 31 * result + price.hashCode();
         result = 31 * result + (isCountable ? 1 : 0);
+        
         return result;
     }
 }
