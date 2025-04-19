@@ -11,9 +11,9 @@ hence it resides in its own class.
 
 
 Assumptions:
-* each Product can only be affected by 1 discount at any given time.
+* Each Product can only be affected by 1 discount at any given time.
 Reason: I've never seen a supermarket item subject to 2+ discounts
-* no "services" are sold, hence all products have a quantity
+* No "services" are sold, hence all products have a quantity.
 Reason: services are generally not sold in supermarkets but only some type of businesses
 
 Design choices
